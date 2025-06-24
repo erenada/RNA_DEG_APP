@@ -1,0 +1,82 @@
+# Project-specific exclusions
+dont_track/
+roadmap_*.md
+roadmap_integrated.md
+
+# R and RStudio files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp*
+
+# Temporary files
+*.tmp
+*~
+*.bak
+*.swp
+*.swo
+
+# Log files
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Package development
+.Rbuildignore
+.Rcheck/
+.Rproj.user/
+
+# Output files and results
+results/
+output/
+plots/
+exports/
+
+# Large data files (add specific extensions as needed)
+*.rds
+*.RData
+*.xlsx
+*.xls
+data/
+datasets/
+
+# Shiny app specific
+rsconnect/
+shinyapps/
+
+# Testing artifacts
+testthat.log
+
+# Documentation builds
+docs/_site/
+_site/
+
+# Node modules (if using any JS packages)
+node_modules/
+
+# Python files (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Backup files from package managers
+*.orig 
