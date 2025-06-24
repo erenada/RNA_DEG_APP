@@ -237,19 +237,65 @@ Please provide:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License - see the LICENSE file for details.
+
+## Citation
+
+If you use this tool in your research, please cite:
+
+```
+@software{ada2025rna_deg,
+  author = {Ada, Eren},
+  title = {RNA-seq Differential Gene Expression Analysis App},
+  year = {2025},
+  institution = {Harvard Medical School, Department of Immunology},
+  url = {https://github.com/erenada/RNA_DEG_APP}
+}
+```
 
 ## Acknowledgments
 
+This project builds upon the excellent work of the Bioconductor community and R developers:
+
 - **DESeq2**: Love, M.I., Huber, W., Anders, S. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biology, 15:550.
 - **Shiny**: Chang, W., Cheng, J., Allaire, J., Xie, Y., & McPherson, J. (2021). shiny: Web Application Framework for R.
+- **DT**: Xie, Y., Cheng, J., & Tan, X. (2021). DT: A Wrapper of the JavaScript Library 'DataTables'.
+- **plotly**: Sievert, C. (2020). Interactive Web-Based Data Visualization with R, plotly, and shiny.
+
+## Related Projects
+
+This application is part of a modular RNA-seq analysis suite:
+
+- **RNA_QC_APP**: Quality Control and Preprocessing Tool - [https://github.com/erenada/RNA_QC_APP](https://github.com/erenada/RNA_QC_APP)
+- **RNA_DEG_APP**: Differential Gene Expression Analysis Tool (this repository)
+
+## Support & Community
+
+### Getting Help
+
+1. Check the documentation and README
+2. Review system requirements and dependencies
+3. Try with example data to isolate issues
+4. Create an issue with detailed information including:
+   - R version and operating system
+   - Browser and version
+   - Error messages and steps to reproduce
+
+### Reporting Issues
+
+When reporting bugs or requesting features:
+- Use descriptive titles
+- Include system information (R version, OS, browser)
+- Provide reproducible examples when possible
+- Specify dataset characteristics if relevant
 
 ## Contact
 
 **Eren Ada, PhD**  
+Harvard Medical School, Department of Immunology  
 GitHub: [@erenada](https://github.com/erenada)  
 Repository: [RNA_DEG_APP](https://github.com/erenada/RNA_DEG_APP)
 
 ---
 
-**Note**: This application is under active development. Features and interfaces may change as development progresses. Check the repository for the latest updates and releases. 
+**Current Focus**: Sprint 2 - Core DESeq2 analysis pipeline development. The application foundation is complete and ready for analysis execution implementation. 
