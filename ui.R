@@ -10,6 +10,7 @@ source("ui/tab_config.R", local = TRUE)
 source("ui/tab_results.R", local = TRUE)
 source("ui/tab_enrichment.R", local = TRUE)
 source("ui/tab_volcano.R", local = TRUE)
+source("ui/tab_documentation.R", local = TRUE)
 
 ui <- fluidPage(
   theme = shinytheme("flatly"),
@@ -71,7 +72,10 @@ ui <- fluidPage(
     build_enrichment_tab(),
     
     # Tab 6: Volcano Plot Visualization
-    build_volcano_tab()
+    build_volcano_tab(),
+    
+    # Tab 7: Documentation
+    build_documentation_tab()
   ),  # Close tabsetPanel
   
   # Footer

@@ -60,4 +60,7 @@ server <- function(input, output, session) {
   # Tab 6: Volcano Plot Visualization
   source("server_modules/server_tab6_volcano.R", local = TRUE)
   
+  # Tab 7: Documentation
+  source("server_modules/server_tab7_documentation.R", local = TRUE)
+  
 }

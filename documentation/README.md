@@ -14,19 +14,19 @@ Concise guides for using the app, organized by workflow. Each guide includes ess
 
 ## Start Here
 
-- Quick Start Guide: `documentation/quick_start_guide.md`
+- Quick Start Guide: [documentation/quick_start_guide.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/quick_start_guide.md)
 - Data formats: see Count Matrix and Metadata examples in the Quick Start
 
 ---
 
 ## Tab Guides (in order)
 
-1) Data Input: `documentation/01_data_input_tab.md`
-2) Experimental Design: `documentation/02_experimental_design_tab.md`
-3) DESeq2 Configuration: `documentation/03_analysis_configuration_tab.md`
-4) Results: `documentation/04_results_display_tab.md`
-5) Enrichment: `documentation/05_enrichment_tab.md`
-6) Volcano Plot: `documentation/06_volcano_tab.md`
+1) Data Input: [documentation/01_data_input_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/01_data_input_tab.md)
+2) Experimental Design: [documentation/02_experimental_design_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/02_experimental_design_tab.md)
+3) DESeq2 Configuration: [documentation/03_analysis_configuration_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/03_analysis_configuration_tab.md)
+4) Results: [documentation/04_results_display_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/04_results_display_tab.md)
+5) Enrichment: [documentation/05_enrichment_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/05_enrichment_tab.md)
+6) Volcano Plot: [documentation/06_volcano_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/06_volcano_tab.md)
 
 ---
 

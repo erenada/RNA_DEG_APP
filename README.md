@@ -1,4 +1,4 @@
-# RNA-seq Differential Gene Expression Analysis App (Shiny)
+# RNA-seq Differential Gene Expression Analysis App
 
 Author: Eren Ada, PhD  
 Last Updated: October 21, 2025  
@@ -8,7 +8,7 @@ Version: 1.0
 
 ## Overview
 
-A Shiny app that guides you through RNA-seq differential expression with DESeq2: upload data, build contrasts (with optional covariates), run analysis, review/export results, perform GO enrichment, and create publication-ready volcano plots. You can also use pre-computed DEG CSVs for Enrichment and Volcano without running DESeq2 in-app.
+A comprehensive Shiny app that guides you through RNA-seq differential expression with DESeq2: upload data, build contrasts (with optional covariates), run analysis, review/export results, perform GO enrichment, and create publication-ready volcano plots. You can also use pre-computed DEG CSVs for Enrichment and Volcano without running DESeq2 in-app.
 
 ---
 
