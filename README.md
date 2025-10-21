@@ -58,6 +58,18 @@ source("app.R")
 
 ---
 
+## Screenshots
+
+### Volcano Plot Visualization
+![Volcano Plot](documentation/volcano-plot-screenshot.png)
+*Interactive volcano plots with customizable thresholds, gene labeling, and publication-ready export options*
+
+### Enrichment Analysis Results  
+![Enrichment Analysis](documentation/enrichment-analysis-screenshot.png)
+*GO enrichment analysis with interactive tables, bar plots, dot plots, and per-term gene list downloads*
+
+---
+
 ## Documentation
 
 - Documentation index: [documentation/README.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/README.md)
