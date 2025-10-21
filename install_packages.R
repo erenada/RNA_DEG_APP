@@ -34,7 +34,9 @@ enhanced_cran <- c(
   "shinyalert",
   "openxlsx",
   "pheatmap",
-  "RColorBrewer"
+  "RColorBrewer",
+  "digest",
+  "colourpicker"
 )
 
 # Advanced packages (Sprint 5-6)
@@ -48,7 +50,9 @@ advanced_cran <- c(
 )
 
 advanced_bioc <- c(
-  "IHW"
+  "IHW",
+  "EnhancedVolcano",
+  "apeglm"
 )
 
 # Function to install CRAN packages

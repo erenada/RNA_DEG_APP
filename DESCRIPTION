@@ -31,5 +31,9 @@ Suggests:
     shinyalert,
     openxlsx,
     pheatmap,
-    RColorBrewer
+    RColorBrewer,
+    EnhancedVolcano,
+    apeglm,
+    digest,
+    colourpicker
 RoxygenNote: 7.2.0 

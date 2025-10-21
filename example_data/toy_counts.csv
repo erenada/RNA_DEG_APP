@@ -1,0 +1,11 @@
+"Gene","Control_1","Control_2","Control_3","Treatment_1","Treatment_2","Treatment_3"
+"Gene_UP1",85,112,103,360,445,390
+"Gene_UP2",42,58,51,275,330,285
+"Gene_DOWN1",470,535,490,105,140,118
+"Gene_DOWN2",280,320,295,42,58,48
+"Gene_MOD_UP",180,218,195,365,425,385
+"Gene_MOD_DOWN",375,430,395,180,215,195
+"Gene_STABLE1",88,108,95,92,110,96
+"Gene_STABLE2",470,525,485,485,520,495
+"Gene_LOW1",5,10,7,7,10,8
+"Gene_LOW2",4,6,5,3,8,5

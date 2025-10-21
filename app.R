@@ -12,10 +12,5 @@ source("global.R")
 source("ui.R")
 source("server.R")
 
-# Create and run the application explicitly
-deg_app <- shinyApp(ui = ui, server = server)
-
-# Run the app when this file is sourced
-if (interactive()) {
-  runApp(deg_app)
-} 
+# Create and return the application object
+shinyApp(ui = ui, server = server) 

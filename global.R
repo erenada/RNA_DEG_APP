@@ -4,11 +4,16 @@
 
 # Load required packages
 required_packages <- c(
-  "shiny", "shinythemes", "shinyWidgets", "shinyjs", "DT", 
-  "dplyr", "tidyr", "readr", "ggplot2", "plotly", "tools"
+  "shiny", "shinythemes", "shinyWidgets", "shinyjs", "shinycssloaders", "DT", 
+  "dplyr", "tidyr", "readr", "ggplot2", "plotly", "tools", "openxlsx",
+  "digest"  # For enrichment module cache keys
 )
 
-bioc_packages <- c("DESeq2", "SummarizedExperiment")
+bioc_packages <- c(
+  "DESeq2", "SummarizedExperiment",
+  "clusterProfiler", "enrichplot"  # For enrichment analysis
+  # Note: org.Mm.eg.db and org.Hs.eg.db are loaded conditionally based on user selection
+)
 
 # Function to safely load packages
 load_package <- function(pkg, is_bioc = FALSE) {
@@ -44,6 +49,36 @@ if (file.exists("R/utils_validation.R")) {
 
 if (file.exists("R/utils_deseq2.R")) {
   source("R/utils_deseq2.R")
+}
+
+if (file.exists("R/utils_enrichment.R")) {
+  source("R/utils_enrichment.R")
+}
+
+if (file.exists("R/utils_visualization.R")) {
+  source("R/utils_visualization.R")
+}
+
+# Utility function to load organism database conditionally
+# Note: This function is called when user selects organism in Tab 1
+get_orgdb <- function(organism) {
+  if (organism == "Mouse") {
+    pkg_name <- "org.Mm.eg.db"
+    if (!require(pkg_name, character.only = TRUE, quietly = TRUE)) {
+      stop(paste0("Mouse genome annotation package 'org.Mm.eg.db' is not installed.\n",
+                  "Please run: BiocManager::install('org.Mm.eg.db')"))
+    }
+    return(org.Mm.eg.db::org.Mm.eg.db)
+  } else if (organism == "Human") {
+    pkg_name <- "org.Hs.eg.db"
+    if (!require(pkg_name, character.only = TRUE, quietly = TRUE)) {
+      stop(paste0("Human genome annotation package 'org.Hs.eg.db' is not installed.\n",
+                  "Please run: BiocManager::install('org.Hs.eg.db')"))
+    }
+    return(org.Hs.eg.db::org.Hs.eg.db)
+  } else {
+    stop(paste0("Unsupported organism: ", organism, ". Please select 'Mouse' or 'Human'."))
+  }
 }
 
 cat("✓ All packages and utilities loaded successfully!\n")

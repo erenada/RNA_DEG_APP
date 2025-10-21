@@ -1,6 +1,8 @@
 # Project-specific exclusions
 dont_track/
-roadmap_*.md
+old_example_data/
+*roadmap_*.md
+*roadmap*
 roadmap_integrated.md
 
 # R and RStudio files
