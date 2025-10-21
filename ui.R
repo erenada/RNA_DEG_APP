@@ -18,9 +18,19 @@ ui <- fluidPage(
   titlePanel(
     div(
       h1("RNA-seq Differential Gene Expression Analysis", 
-         style = "color: #2C3E50; margin-bottom: 5px;"),
-      h4("Powered by DESeq2", 
-         style = "color: #7F8C8D; margin-top: 0px; font-weight: normal;")
+         style = "color: #2C3E50; margin-bottom: 10px; text-align: center;"),
+      div(
+        style = "text-align: center; margin-bottom: 15px;",
+        p(strong("Author: "), "Eren Ada, PhD", 
+          style = "color: #34495E; margin-bottom: 2px; font-size: 14px;"),
+        p("Harvard Medical School, Department of Immunology", 
+          style = "color: #7F8C8D; margin-bottom: 2px; font-size: 12px;"),
+        p(tags$a("GitHub: @erenada", 
+                 href = "https://github.com/erenada", 
+                 target = "_blank",
+                 style = "color: #3498DB; text-decoration: none;"), 
+          style = "margin-bottom: 0px; font-size: 12px;")
+      )
     )
   ),
   

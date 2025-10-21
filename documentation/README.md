@@ -1,7 +1,7 @@
 # RNA-seq DEG Analysis App - Documentation
 
 Author: Eren Ada, PhD  
-Version: 0.1.0 (Development)  
+Version: 1.0  
 Last Updated: October 21, 2025
 
 ---

@@ -60,15 +60,15 @@ source("app.R")
 
 ## Documentation
 
-- Documentation index: `documentation/README.md`
-- Quick Start Guide: `documentation/quick_start_guide.md`
+- Documentation index: [documentation/README.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/README.md)
+- Quick Start Guide: [documentation/quick_start_guide.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/quick_start_guide.md)
 - Tab Guides (in order):
-  - `documentation/01_data_input_tab.md`
-  - `documentation/02_experimental_design_tab.md`
-  - `documentation/03_analysis_configuration_tab.md`
-  - `documentation/04_results_display_tab.md`
-  - `documentation/05_enrichment_tab.md`
-  - `documentation/06_volcano_tab.md`
+  - Data Input: [01_data_input_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/01_data_input_tab.md)
+  - Experimental Design: [02_experimental_design_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/02_experimental_design_tab.md)
+  - DESeq2 Configuration: [03_analysis_configuration_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/03_analysis_configuration_tab.md)
+  - Results: [04_results_display_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/04_results_display_tab.md)
+  - Enrichment: [05_enrichment_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/05_enrichment_tab.md)
+  - Volcano Plot: [06_volcano_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/06_volcano_tab.md)
 
 ---
 
