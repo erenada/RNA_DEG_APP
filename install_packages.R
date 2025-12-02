@@ -103,32 +103,24 @@ install_bioc_packages <- function(packages, description) {
 
 # Install packages by category
 cat("\n", paste(rep("=", 50), collapse = ""), "\n")
-cat("ESSENTIAL PACKAGES (Required for Sprint 1)\n")
+cat("ESSENTIAL PACKAGES\n")
 cat(paste(rep("=", 50), collapse = ""), "\n")
 
 install_cran_packages(essential_cran, "Essential CRAN packages")
 install_bioc_packages(essential_bioc, "Essential Bioconductor packages")
 
-# Ask user if they want to install additional packages
-response <- readline(prompt = "\nInstall enhanced packages for future features? (y/n): ")
-if (tolower(response) %in% c("y", "yes")) {
-  cat("\n", paste(rep("=", 50), collapse = ""), "\n")
-  cat("ENHANCED PACKAGES (For Sprint 3-4)\n")
-  cat(paste(rep("=", 50), collapse = ""), "\n")
-  
-  install_cran_packages(enhanced_cran, "Enhanced CRAN packages")
-  
-  # Ask about advanced packages
-  response2 <- readline(prompt = "\nInstall advanced packages for optimization? (y/n): ")
-  if (tolower(response2) %in% c("y", "yes")) {
-    cat("\n", paste(rep("=", 50), collapse = ""), "\n")
-    cat("ADVANCED PACKAGES (For Sprint 5-6)\n")
-    cat(paste(rep("=", 50), collapse = ""), "\n")
-    
-    install_cran_packages(advanced_cran, "Advanced CRAN packages")
-    install_bioc_packages(advanced_bioc, "Advanced Bioconductor packages")
-  }
-}
+cat("\n", paste(rep("=", 50), collapse = ""), "\n")
+cat("ENHANCED PACKAGES\n")
+cat(paste(rep("=", 50), collapse = ""), "\n")
+
+install_cran_packages(enhanced_cran, "Enhanced CRAN packages")
+
+cat("\n", paste(rep("=", 50), collapse = ""), "\n")
+cat("ADVANCED PACKAGES\n")
+cat(paste(rep("=", 50), collapse = ""), "\n")
+
+install_cran_packages(advanced_cran, "Advanced CRAN packages")
+install_bioc_packages(advanced_bioc, "Advanced Bioconductor packages")
 
 # Final summary
 cat("\n", paste(rep("=", 50), collapse = ""), "\n")
