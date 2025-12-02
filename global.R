@@ -2,6 +2,13 @@
 # Author: Eren Ada, PhD
 # This file is automatically loaded by Shiny before ui.R and server.R
 
+# Configure repositories to prefer Bioconductor when available
+suppressWarnings({
+  if (requireNamespace("BiocManager", quietly = TRUE)) {
+    options(repos = BiocManager::repositories())
+  }
+})
+
 # Load required packages
 required_packages <- c(
   "shiny", "shinythemes", "shinyWidgets", "shinyjs", "shinycssloaders", "DT", 

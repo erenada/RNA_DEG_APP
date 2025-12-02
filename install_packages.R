@@ -10,42 +10,50 @@ if (!require("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
 
-# Essential packages (Sprint 1)
+# Essential packages (core app dependencies)
 essential_cran <- c(
   "shiny",
-  "shinythemes", 
+  "shinythemes",
   "shinyWidgets",
+  "shinyjs",
+  "shinycssloaders",
   "DT",
   "dplyr",
-  "tidyr", 
+  "tidyr",
   "readr",
   "ggplot2",
-  "plotly"
+  "plotly",
+  "openxlsx",
+  "digest",
+  "colourpicker",
+  "jsonlite"
 )
 
 essential_bioc <- c(
   "DESeq2",
-  "SummarizedExperiment"
+  "SummarizedExperiment",
+  "clusterProfiler",
+  "enrichplot",
+  "EnhancedVolcano",
+  "apeglm",
+  "org.Mm.eg.db",
+  "org.Hs.eg.db"
 )
 
-# Enhanced packages (Sprint 3-4)
+# Enhanced packages (optional UI and plotting features)
 enhanced_cran <- c(
-  "shinycssloaders",
   "shinyalert",
-  "openxlsx",
   "pheatmap",
   "RColorBrewer",
-  "digest",
-  "colourpicker"
+  "testthat"
 )
 
-# Advanced packages (Sprint 5-6)
+# Advanced packages (optional optimization/reporting packages)
 advanced_cran <- c(
   "parallel",
   "future",
   "promises",
   "matrixStats",
-  "jsonlite",
   "rmarkdown"
 )
 
@@ -64,12 +72,12 @@ install_cran_packages <- function(packages, description) {
       cat(paste0("  Installing ", pkg, "...\n"))
       tryCatch({
         install.packages(pkg, dependencies = TRUE)
-        cat(paste0("  ✓ ", pkg, " installed successfully\n"))
+        cat(paste0("  ", pkg, " installed successfully\n"))
       }, error = function(e) {
-        cat(paste0("  ✗ Failed to install ", pkg, ": ", e$message, "\n"))
+        cat(paste0("  Failed to install ", pkg, ": ", e$message, "\n"))
       })
     } else {
-      cat(paste0("  ✓ ", pkg, " already installed\n"))
+      cat(paste0("  ", pkg, " already installed\n"))
     }
   }
 }
@@ -83,12 +91,12 @@ install_bioc_packages <- function(packages, description) {
       cat(paste0("  Installing ", pkg, "...\n"))
       tryCatch({
         BiocManager::install(pkg, update = FALSE)
-        cat(paste0("  ✓ ", pkg, " installed successfully\n"))
+        cat(paste0("  ", pkg, " installed successfully\n"))
       }, error = function(e) {
-        cat(paste0("  ✗ Failed to install ", pkg, ": ", e$message, "\n"))
+        cat(paste0("  Failed to install ", pkg, ": ", e$message, "\n"))
       })
     } else {
-      cat(paste0("  ✓ ", pkg, " already installed\n"))
+      cat(paste0("  ", pkg, " already installed\n"))
     }
   }
 }
@@ -137,7 +145,7 @@ cat("\nOr simply run: shiny::runApp('.')\n")
 r_version <- R.Version()
 cat(paste0("\nR version: ", r_version$major, ".", r_version$minor, "\n"))
 if (as.numeric(paste0(r_version$major, ".", r_version$minor)) < 4.1) {
-  cat("⚠️  WARNING: R version 4.1.0 or higher is recommended\n")
+  cat("WARNING: R version 4.1.0 or higher is recommended\n")
 }
 
-cat("\n🎉 Setup complete! You can now run the DEG analysis app.\n") 
+cat("\nSetup complete. You can now run the DEG analysis app.\n")

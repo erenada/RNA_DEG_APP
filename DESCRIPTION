@@ -3,7 +3,7 @@ Type: Shiny Application
 Title: RNA-seq Differential Gene Expression Analysis
 Version: 0.1.0
 Author: Eren Ada, PhD
-Maintainer: Eren Ada <eren.ada@example.com>
+Maintainer: Eren Ada erenada@gmail.com>
 Description: A comprehensive Shiny application for differential gene expression 
     analysis of RNA-seq data using DESeq2. Provides guided workflow from data 
     upload through result export.
@@ -24,7 +24,9 @@ Imports:
     SummarizedExperiment,
     ggplot2,
     plotly,
-    tools
+    tools,
+    clusterProfiler,
+    enrichplot
 Suggests:
     testthat (>= 3.0.0),
     shinycssloaders,
@@ -36,4 +38,4 @@ Suggests:
     apeglm,
     digest,
     colourpicker
-RoxygenNote: 7.2.0 
+RoxygenNote: 7.2.0
