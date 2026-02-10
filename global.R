@@ -9,6 +9,9 @@ suppressWarnings({
   }
 })
 
+# Set maximum upload size to 300 MB (default is 5 MB)
+options(shiny.maxRequestSize = 300 * 1024^2)
+
 # Load required packages
 required_packages <- c(
   "shiny", "shinythemes", "shinyWidgets", "shinyjs", "shinycssloaders", "DT", 
