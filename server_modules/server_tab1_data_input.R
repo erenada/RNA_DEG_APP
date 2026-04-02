@@ -95,7 +95,8 @@ observeEvent(input$count_file, {
         sep = input$count_sep,
         header = input$count_header,
         row.names = if(input$count_rownames) 1 else NULL,
-        stringsAsFactors = FALSE
+        stringsAsFactors = FALSE,
+        check.names = FALSE
       )
     } else if (ext %in% c("tsv", "txt")) {
       values$count_data <- read.delim(
@@ -103,7 +104,8 @@ observeEvent(input$count_file, {
         sep = input$count_sep,
         header = input$count_header,
         row.names = if(input$count_rownames) 1 else NULL,
-        stringsAsFactors = FALSE
+        stringsAsFactors = FALSE,
+        check.names = FALSE
       )
     }
     
@@ -134,7 +136,8 @@ observeEvent(input$meta_file, {
         sep = input$meta_sep,
         header = input$meta_header,
         row.names = if(input$meta_rownames) 1 else NULL,
-        stringsAsFactors = FALSE
+        stringsAsFactors = FALSE,
+        check.names = FALSE
       )
     } else if (ext %in% c("tsv", "txt")) {
       values$meta_data <- read.delim(
@@ -142,7 +145,8 @@ observeEvent(input$meta_file, {
         sep = input$meta_sep,
         header = input$meta_header,
         row.names = if(input$meta_rownames) 1 else NULL,
-        stringsAsFactors = FALSE
+        stringsAsFactors = FALSE,
+        check.names = FALSE
       )
     }
     
