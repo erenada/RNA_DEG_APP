@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it as below."
+title: "RNA-seq Differential Gene Expression Analysis App"
+version: 1.0.0
+date-released: 2025-10-21
+authors:
+  - family-names: Ada
+    given-names: Eren
+    orcid: "https://orcid.org/0000-0001-9141-8282"
+abstract: >
+  An interactive R Shiny application for DESeq2-based differential gene
+  expression analysis of bulk RNA-seq data. Provides no-code tools for
+  contrast design, statistical analysis, GO enrichment (BP/MF/CC), and
+  publication-ready volcano plot generation. Developed at Harvard Medical
+  School Department of Immunology.
+keywords:
+  - RNA-seq
+  - differential expression
+  - DESeq2
+  - transcriptomics
+  - bioinformatics
+  - R Shiny
+  - GO enrichment
+license: CC-BY-NC-SA-4.0
+repository-code: "https://github.com/erenada/RNA_DEG_APP"
