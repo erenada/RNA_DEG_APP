@@ -29,7 +29,8 @@ cran_packages <- c(
   "shinyalert",
   "pheatmap",
   "RColorBrewer",
-  "testthat"
+  "testthat",
+  "ggrepel"
 )
 
 # Bioconductor packages

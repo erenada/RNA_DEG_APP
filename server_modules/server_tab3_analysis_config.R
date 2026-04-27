@@ -85,25 +85,25 @@ observe({
   has_data <- !is.null(values$count_data) && !is.null(values$metadata)
   
   # Basic validation for required parameters
-  valid_config <- !is.null(input$test_type) && 
-                 !is.null(input$alpha_level) && 
+  valid_config <- isTruthy(input$test_type) &&
+                 isTruthy(input$alpha_level) &&
                  input$alpha_level > 0 && input$alpha_level <= 1 &&
-                 !is.null(input$lfc_threshold) && 
+                 isTruthy(input$lfc_threshold) &&
                  input$lfc_threshold >= 0
   
   # Additional validation for LRT
-  if (!is.null(input$test_type) && input$test_type == "LRT") {
-    valid_config <- valid_config && 
-                   !is.null(input$lrt_reduced_formula) && 
+  if (isTruthy(input$test_type) && input$test_type == "LRT") {
+    valid_config <- valid_config &&
+                   isTruthy(input$lrt_reduced_formula) &&
                    nchar(trimws(input$lrt_reduced_formula)) > 0
   }
   
   # Additional validation for pre-filtering
-  if (!is.null(input$apply_prefiltering) && input$apply_prefiltering) {
-    valid_config <- valid_config && 
-                   !is.null(input$min_count_threshold) && 
+  if (isTruthy(input$apply_prefiltering) && input$apply_prefiltering) {
+    valid_config <- valid_config &&
+                   isTruthy(input$min_count_threshold) &&
                    input$min_count_threshold > 0 &&
-                   !is.null(input$min_samples_threshold) && 
+                   isTruthy(input$min_samples_threshold) &&
                    input$min_samples_threshold > 0
   }
   
@@ -275,7 +275,7 @@ observeEvent(input$run_analysis, {
         # Filter by: padj < alpha AND abs(log2FoldChange) > threshold
         total_genes <- nrow(res_df)
         
-        if (input$lfc_threshold > 0) {
+        if (isTruthy(input$lfc_threshold) && input$lfc_threshold > 0) {
           # Apply magnitude filter
           sig_genes <- sum(res_df$padj < input$alpha_level & 
                           abs(res_df$log2FoldChange) > input$lfc_threshold, na.rm = TRUE)

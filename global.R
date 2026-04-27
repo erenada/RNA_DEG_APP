@@ -16,7 +16,8 @@ options(shiny.maxRequestSize = 300 * 1024^2)
 required_packages <- c(
   "shiny", "shinythemes", "shinyWidgets", "shinyjs", "shinycssloaders", "DT", 
   "dplyr", "tidyr", "readr", "ggplot2", "plotly", "tools", "openxlsx",
-  "digest"  # For enrichment module cache keys
+  "digest",   # For enrichment module cache keys
+  "ggrepel"   # For MA plot gene labeling
 )
 
 bioc_packages <- c(

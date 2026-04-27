@@ -586,3 +586,515 @@ sanitize_filename <- function(text) {
   return(sanitized)
 }
 
+
+# =============================================================================
+# MA PLOT HELPERS
+# Author: Eren Ada, PhD
+# Date: 04/22/2026
+#
+# Provides helper functions for generating publication-ready MA plots
+# (M = log2 fold change, A = mean expression) using ggplot2 + ggrepel.
+# =============================================================================
+
+#' Get MA Data Source
+#'
+#' Resolves data source priority for MA plot generation. Mirrors the volcano
+#' data-source contract: uploaded CSV takes precedence, otherwise the computed
+#' DESeq2 results are used with the shrunk/unshrunken toggle.
+#'
+#' @param contrast Character string of contrast name
+#' @param use_shrunk Logical, whether to use shrunk log2FC
+#' @param values Reactive values object from Shiny server
+#'
+#' @return List with components:
+#'   - data: Data frame with results (must include baseMean)
+#'   - source_type: Character string ("uploaded", "computed_shrunk",
+#'     "computed_unshrunk", or "none")
+#'   - shrinkage_applied: Logical or NA
+#'
+#' @export
+get_ma_data_source <- function(contrast, use_shrunk, values) {
+  
+  # Priority 1: Check for uploaded data
+  if (!is.null(values$uploaded_ma_results) && 
+      contrast %in% names(values$uploaded_ma_results)) {
+    
+    uploaded_data <- values$uploaded_ma_results[[contrast]]
+    
+    # Check if shrinkage info is available in uploaded data
+    shrinkage_applied <- if ("shrinkage_applied" %in% names(uploaded_data)) {
+      uploaded_data$shrinkage_applied
+    } else {
+      NA
+    }
+    
+    return(list(
+      data = uploaded_data,
+      source_type = "uploaded",
+      shrinkage_applied = shrinkage_applied
+    ))
+  }
+  
+  # Priority 2 & 3: Check for computed results
+  if (!is.null(values$deseq_results) && 
+      contrast %in% names(values$deseq_results)) {
+    
+    contrast_results <- values$deseq_results[[contrast]]
+    
+    # Determine which results to use based on use_shrunk preference
+    if (use_shrunk && !is.null(contrast_results$results)) {
+      # Use shrunk results if available and requested
+      return(list(
+        data = contrast_results$results,
+        source_type = "computed_shrunk",
+        shrinkage_applied = TRUE
+      ))
+    } else if (!is.null(contrast_results$unshrunken_results)) {
+      # Use unshrunken results
+      return(list(
+        data = contrast_results$unshrunken_results,
+        source_type = "computed_unshrunk",
+        shrinkage_applied = FALSE
+      ))
+    } else if (!is.null(contrast_results$results)) {
+      # Fallback to shrunk results if unshrunken not available
+      return(list(
+        data = contrast_results$results,
+        source_type = "computed_shrunk",
+        shrinkage_applied = TRUE
+      ))
+    }
+  }
+  
+  # No data found
+  return(list(
+    data = NULL,
+    source_type = "none",
+    shrinkage_applied = NA
+  ))
+}
+
+
+#' Generate Cache Key for MA Plot
+#'
+#' Creates a unique cache key based on contrast name and parameters.
+#'
+#' @param contrast Character string of contrast name
+#' @param params List of parameters used for plot generation
+#'
+#' @return Character string MD5 hash
+#'
+#' @export
+generate_cache_key_ma <- function(contrast, params) {
+  if (!requireNamespace("digest", quietly = TRUE)) {
+    stop("digest package is required. Install with: install.packages('digest')")
+  }
+  
+  cache_input <- list(
+    contrast = contrast,
+    params = params
+  )
+  
+  digest::digest(cache_input, algo = "md5")
+}
+
+
+#' Generate MA Plot
+#'
+#' Creates a publication-ready MA plot from DESeq2 results using ggplot2
+#' and ggrepel for gene labeling.
+#'
+#' @param results_df Data frame with columns: gene, baseMean, log2FoldChange,
+#'   pvalue, padj
+#' @param params List of parameters (see generate_volcano_plot for the shared
+#'   set). MA-specific additions:
+#'   - x_transform: "log10" (default) or "log2" for the baseMean transform
+#'   - show_zero_line: Logical, whether to draw a horizontal line at y = 0
+#'
+#' @return List with components:
+#'   - plot: ggplot object
+#'   - stats: Named list with n_up, n_down, n_total, n_sig, n_labeled_up,
+#'     n_labeled_down, n_force_labeled, n_force_found, n_selected_requested,
+#'     n_selected_found, all_padj_na
+#'
+#' @export
+generate_ma_plot <- function(results_df, params) {
+  
+  # Validate required packages
+  if (!requireNamespace("ggrepel", quietly = TRUE)) {
+    stop("ggrepel package is required. Install with: install.packages('ggrepel')")
+  }
+  
+  # Validate required columns
+  required_cols <- c("gene", "baseMean", "log2FoldChange", "pvalue", "padj")
+  missing_cols <- setdiff(required_cols, colnames(results_df))
+  if (length(missing_cols) > 0) {
+    stop("Missing required columns: ", paste(missing_cols, collapse = ", "))
+  }
+  
+  # Set default parameters (parity with generate_volcano_plot + MA-specific keys)
+  params <- modifyList(list(
+    padj_cutoff = 0.05,
+    lfc_cutoff = 1.0,
+    top_n_labels = 20,
+    point_size = 1.5,
+    label_size = 3.0,
+    alpha = 0.6,
+    boxed_labels = TRUE,
+    draw_connectors = TRUE,
+    connector_width = 0.3,
+    max_overlaps = 50,
+    legend_position = "right",
+    force_labels = character(0),
+    selected_genes = character(0),
+    custom_labels_only = FALSE,
+    fix_axes = FALSE,
+    xlim_min = NA,
+    xlim_max = NA,
+    ylim_min = NA,
+    ylim_max = NA,
+    contrast_name = "Contrast",
+    title_align = "center",
+    use_pvalue_fallback = TRUE,
+    
+    # Text customization
+    show_subtitle = TRUE,
+    custom_subtitle = "",
+    show_percentage = FALSE,
+    subtitle_align = "center",
+    show_caption = TRUE,
+    custom_caption = "",
+    caption_align = "center",
+    
+    # Colors
+    color_up = "#CD0000",
+    color_down = "#4169E1",
+    color_ns = "#999999",
+    color_selected = "#FF6600",
+    
+    # Point styling
+    point_shape = 19,
+    
+    # Threshold / reference lines
+    show_threshold_lines = TRUE,
+    threshold_style = "dashed",
+    show_zero_line = TRUE,
+    
+    # Annotations
+    show_counts_on_plot = FALSE,
+    show_major_grid = TRUE,
+    show_minor_grid = FALSE,
+    
+    # MA-specific
+    x_transform = "log10"
+  ), params)
+  
+  # Drop rows with NA baseMean or log2FoldChange upfront (baseMean is the
+  # x-axis, so NAs there would silently be removed by ggplot anyway).
+  valid_mask <- !is.na(results_df$baseMean) & !is.na(results_df$log2FoldChange)
+  results_df <- results_df[valid_mask, , drop = FALSE]
+  
+  if (nrow(results_df) == 0) {
+    stop("No rows remain after removing NA baseMean / log2FoldChange values.")
+  }
+  
+  # Decide which p-value column drives significance and the fallback flag.
+  # Matches the volcano convention: use padj unless all padj are NA, then pvalue.
+  all_padj_na <- all(is.na(results_df$padj))
+  y_col <- if (all_padj_na) "pvalue" else "padj"
+  p_col <- results_df[[y_col]]
+  
+  # Rank score for label selection (same formula as volcano)
+  results_df$label_score <- -log10(p_col) * abs(results_df$log2FoldChange)
+  results_df$label_score[is.na(results_df$label_score)] <- 0
+  
+  # Significance masks
+  sig_up_mask <- !is.na(p_col) & 
+                 p_col < params$padj_cutoff & 
+                 results_df$log2FoldChange > params$lfc_cutoff
+  
+  sig_down_mask <- !is.na(p_col) & 
+                   p_col < params$padj_cutoff & 
+                   results_df$log2FoldChange < -params$lfc_cutoff
+  
+  n_up <- sum(sig_up_mask, na.rm = TRUE)
+  n_down <- sum(sig_down_mask, na.rm = TRUE)
+  n_sig <- n_up + n_down
+  n_total <- nrow(results_df)
+  
+  # Build the regulation factor (drives point color)
+  regulation <- rep("NS", nrow(results_df))
+  regulation[sig_up_mask] <- "Up"
+  regulation[sig_down_mask] <- "Down"
+  results_df$regulation <- factor(regulation, levels = c("Up", "Down", "NS"))
+  
+  # Compute x-axis (A) transform on baseMean (non-negative by construction)
+  results_df$A <- if (identical(params$x_transform, "log2")) {
+    log2(results_df$baseMean + 1)
+  } else {
+    log10(results_df$baseMean + 1)
+  }
+  
+  # Pick genes to label
+  if (params$custom_labels_only) {
+    up_genes <- character(0)
+    down_genes <- character(0)
+    genes_to_label <- params$force_labels
+  } else {
+    up_genes <- results_df %>%
+      dplyr::filter(sig_up_mask) %>%
+      dplyr::arrange(dplyr::desc(label_score)) %>%
+      dplyr::slice_head(n = params$top_n_labels) %>%
+      dplyr::pull(gene)
+    
+    down_genes <- results_df %>%
+      dplyr::filter(sig_down_mask) %>%
+      dplyr::arrange(dplyr::desc(label_score)) %>%
+      dplyr::slice_head(n = params$top_n_labels) %>%
+      dplyr::pull(gene)
+    
+    genes_to_label <- unique(c(up_genes, down_genes, params$force_labels))
+  }
+  
+  n_labeled_up <- sum(results_df$gene %in% up_genes)
+  n_labeled_down <- sum(results_df$gene %in% down_genes)
+  n_force_labeled <- length(params$force_labels)
+  n_force_found <- sum(params$force_labels %in% results_df$gene)
+  n_selected_requested <- length(params$selected_genes)
+  n_selected_found <- sum(results_df$gene %in% params$selected_genes)
+  
+  # Subtitle assembly (mirrors volcano logic)
+  plot_subtitle <- if (!params$show_subtitle) {
+    NULL
+  } else if (!is.null(params$custom_subtitle) && 
+             nchar(trimws(params$custom_subtitle)) > 0) {
+    if (params$show_percentage) {
+      pct_sig <- round((n_sig / n_total) * 100, 1)
+      paste0(params$custom_subtitle, " (", pct_sig, "% significant)")
+    } else {
+      params$custom_subtitle
+    }
+  } else {
+    base_subtitle <- sprintf('Up-regulated: %d | Down-regulated: %d', n_up, n_down)
+    if (params$show_percentage) {
+      pct_sig <- round((n_sig / n_total) * 100, 1)
+      paste0(base_subtitle, " (", pct_sig, "% significant)")
+    } else {
+      base_subtitle
+    }
+  }
+  
+  # Caption assembly
+  plot_caption <- if (!params$show_caption) {
+    NULL
+  } else if (!is.null(params$custom_caption) && 
+             nchar(trimws(params$custom_caption)) > 0) {
+    params$custom_caption
+  } else {
+    p_label <- if (y_col == "padj") "FDR" else "P-value"
+    base_caption <- sprintf(
+      '%s < %.2f, |Log2FC| > %.1f\nTop %d genes per direction ranked by -log10(%s) * |Log2FC|',
+      p_label,
+      params$padj_cutoff,
+      params$lfc_cutoff,
+      params$top_n_labels,
+      p_label
+    )
+    if (n_force_labeled > 0) {
+      base_caption <- paste0(base_caption, sprintf('\n%d custom genes labeled', n_force_found))
+    }
+    if (y_col == "pvalue") {
+      base_caption <- paste0(base_caption, '\nNote: Using p-value (adjusted p-values not available)')
+    }
+    base_caption
+  }
+  
+  # Axis labels
+  xlab_text <- if (identical(params$x_transform, "log2")) {
+    bquote(~Log[2]~"("*baseMean + 1*")")
+  } else {
+    bquote(~Log[10]~"("*baseMean + 1*")")
+  }
+  ylab_text <- bquote(~Log[2]~fold~change)
+  
+  # Color mapping keyed by the regulation factor
+  color_values <- c(
+    "Up" = params$color_up,
+    "Down" = params$color_down,
+    "NS" = params$color_ns
+  )
+  
+  # Threshold line parameters (blank means no lines drawn)
+  threshold_linetype <- if (params$show_threshold_lines) params$threshold_style else "blank"
+  
+  # Core ggplot
+  ma_plot <- ggplot2::ggplot(
+    results_df,
+    ggplot2::aes(x = A, y = log2FoldChange, color = regulation)
+  ) +
+    ggplot2::geom_point(
+      shape = params$point_shape,
+      size = params$point_size,
+      alpha = params$alpha
+    ) +
+    ggplot2::scale_color_manual(
+      values = color_values,
+      breaks = c("Up", "Down", "NS"),
+      drop = FALSE,
+      name = NULL
+    ) +
+    ggplot2::labs(
+      title = params$contrast_name,
+      subtitle = plot_subtitle,
+      caption = plot_caption,
+      x = xlab_text,
+      y = ylab_text
+    ) +
+    ggplot2::theme_bw(base_size = 12)
+  
+  # Reference line at zero log2FC
+  if (isTRUE(params$show_zero_line)) {
+    ma_plot <- ma_plot +
+      ggplot2::geom_hline(
+        yintercept = 0,
+        color = "grey30",
+        linewidth = 0.4
+      )
+  }
+  
+  # Threshold lines at +/- lfc_cutoff
+  if (params$show_threshold_lines) {
+    ma_plot <- ma_plot +
+      ggplot2::geom_hline(
+        yintercept = c(-params$lfc_cutoff, params$lfc_cutoff),
+        linetype = threshold_linetype,
+        color = "grey30",
+        linewidth = 0.5
+      )
+  }
+  
+  # Gene labels (ggrepel)
+  if (length(genes_to_label) > 0) {
+    label_df <- results_df[results_df$gene %in% genes_to_label, , drop = FALSE]
+    if (nrow(label_df) > 0) {
+      repel_fun <- if (isTRUE(params$boxed_labels)) {
+        ggrepel::geom_label_repel
+      } else {
+        ggrepel::geom_text_repel
+      }
+      ma_plot <- ma_plot +
+        repel_fun(
+          data = label_df,
+          mapping = ggplot2::aes(x = A, y = log2FoldChange, label = gene),
+          size = params$label_size,
+          max.overlaps = params$max_overlaps,
+          segment.size = params$connector_width,
+          segment.color = "grey50",
+          min.segment.length = 0.1,
+          show.legend = FALSE,
+          inherit.aes = FALSE,
+          color = "black"
+        )
+    }
+  }
+  
+  # Selected-gene overlay (table row selection in the server)
+  if (!is.null(params$selected_genes) && length(params$selected_genes) > 0) {
+    sel_df <- results_df[results_df$gene %in% params$selected_genes, , drop = FALSE]
+    if (nrow(sel_df) > 0) {
+      ma_plot <- ma_plot +
+        ggplot2::geom_point(
+          data = sel_df,
+          mapping = ggplot2::aes(x = A, y = log2FoldChange),
+          color = params$color_selected,
+          size = params$point_size,
+          alpha = params$alpha,
+          inherit.aes = FALSE,
+          show.legend = FALSE
+        )
+    }
+  }
+  
+  # Grid toggles + title/subtitle/caption alignment + legend position
+  title_hjust <- switch(params$title_align,
+                        "left" = 0, "center" = 0.5, "right" = 1, 0.5)
+  subtitle_hjust <- switch(params$subtitle_align,
+                           "left" = 0, "center" = 0.5, "right" = 1, 0.5)
+  caption_hjust <- switch(params$caption_align,
+                          "left" = 0, "center" = 0.5, "right" = 1, 0.5)
+  
+  ma_plot <- ma_plot +
+    ggplot2::theme(
+      legend.position = params$legend_position,
+      plot.title = ggplot2::element_text(hjust = title_hjust, face = "bold", size = 13),
+      plot.subtitle = ggplot2::element_text(hjust = subtitle_hjust, size = 11),
+      plot.caption = ggplot2::element_text(hjust = caption_hjust, size = 10),
+      panel.grid.major = if (isTRUE(params$show_major_grid)) {
+        ggplot2::element_line(color = "grey90")
+      } else {
+        ggplot2::element_blank()
+      },
+      panel.grid.minor = if (isTRUE(params$show_minor_grid)) {
+        ggplot2::element_line(color = "grey95")
+      } else {
+        ggplot2::element_blank()
+      }
+    )
+  
+  # Fixed axis limits via coord_cartesian (does not drop points like xlim/ylim)
+  if (isTRUE(params$fix_axes)) {
+    xlim_vals <- if (!is.na(params$xlim_min) && !is.na(params$xlim_max)) {
+      c(params$xlim_min, params$xlim_max)
+    } else {
+      NULL
+    }
+    ylim_vals <- if (!is.na(params$ylim_min) && !is.na(params$ylim_max)) {
+      c(params$ylim_min, params$ylim_max)
+    } else {
+      NULL
+    }
+    if (!is.null(xlim_vals) || !is.null(ylim_vals)) {
+      ma_plot <- ma_plot +
+        ggplot2::coord_cartesian(xlim = xlim_vals, ylim = ylim_vals)
+    }
+  }
+  
+  # Optional count annotation (top-right of the plotting area)
+  if (isTRUE(params$show_counts_on_plot)) {
+    x_range <- range(results_df$A, na.rm = TRUE)
+    y_range <- range(results_df$log2FoldChange, na.rm = TRUE)
+    count_text <- sprintf("Up: %d\nDown: %d\nTotal: %d", n_up, n_down, n_sig)
+    ma_plot <- ma_plot +
+      ggplot2::annotate(
+        "label",
+        x = x_range[2],
+        y = y_range[2],
+        label = count_text,
+        hjust = 1,
+        vjust = 1,
+        size = 3,
+        fill = "white",
+        alpha = 0.8,
+        label.size = 0.5
+      )
+  }
+  
+  # Return plot and statistics
+  list(
+    plot = ma_plot,
+    stats = list(
+      n_up = n_up,
+      n_down = n_down,
+      n_total = n_total,
+      n_sig = n_sig,
+      n_labeled_up = n_labeled_up,
+      n_labeled_down = n_labeled_down,
+      n_force_labeled = n_force_labeled,
+      n_force_found = n_force_found,
+      n_selected_requested = n_selected_requested,
+      n_selected_found = n_selected_found,
+      all_padj_na = all_padj_na
+    )
+  )
+}
+

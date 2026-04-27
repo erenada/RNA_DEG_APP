@@ -35,7 +35,11 @@ server <- function(input, output, session) {
     enrichment_results = list(),  # Cache for enrichment results
     # Volcano module (Tab 6)
     volcano_cache = list(),  # Cache for volcano plots
-    uploaded_volcano_results = NULL  # Uploaded DEG results for volcano plots
+    uploaded_volcano_results = NULL,  # Uploaded DEG results for volcano plots
+    # MA module (Tab 7)
+    ma_cache = list(),  # Cache for MA plots
+    uploaded_ma_results = NULL,  # Uploaded DEG results for MA plots
+    ma_selected_genes = character(0)  # Genes selected from MA gene table
   )
   
   # =============================================================================
@@ -60,7 +64,10 @@ server <- function(input, output, session) {
   # Tab 6: Volcano Plot Visualization
   source("server_modules/server_tab6_volcano.R", local = TRUE)
   
-  # Tab 7: Documentation
-  source("server_modules/server_tab7_documentation.R", local = TRUE)
+  # Tab 7: MA Plot Visualization
+  source("server_modules/server_tab7_ma.R", local = TRUE)
+  
+  # Tab 8: Documentation
+  source("server_modules/server_tab8_documentation.R", local = TRUE)
   
 }
