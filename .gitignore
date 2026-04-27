@@ -10,7 +10,6 @@ roadmap_integrated.md
 .Rhistory
 .RData
 .Ruserdata
-*.Rproj
 .Rapp.history
 
 # Session Data files
@@ -82,3 +81,4 @@ __pycache__/
 
 # Backup files from package managers
 *.orig 
+.positai
