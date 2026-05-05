@@ -1,14 +1,14 @@
 # RNA-seq Differential Gene Expression Analysis App
 
 Author: Eren Ada, PhD  
-Last Updated: October 21, 2025  
+Last Updated: 05/05/2026  
 Version: 1.0
 
 ---
 
 ## Overview
 
-A comprehensive Shiny app that guides you through RNA-seq differential expression with DESeq2: upload data, build contrasts (with optional covariates), run analysis, review/export results, perform GO enrichment, and create publication-ready volcano plots. You can also use pre-computed DEG CSVs for Enrichment and Volcano without running DESeq2 in-app.
+A comprehensive Shiny app that guides you through RNA-seq differential expression with DESeq2: upload data, build contrasts (with optional covariates), run analysis, review/export results, perform GO enrichment, and create publication-ready visualizations (volcano plots, MA plots, and heatmaps). You can also use pre-computed DEG CSVs for Enrichment, Volcano, MA, and Heatmap (LFC mode) without running DESeq2 in-app.
 
 ---
 
@@ -19,8 +19,6 @@ A comprehensive Shiny app that guides you through RNA-seq differential expressio
 
 ```r
 source("install_packages.R")
-# optional
-source("check_packages.R")
 ```
 
 ---
@@ -51,7 +49,9 @@ source("app.R")
 3) DESeq2 Configuration: choose test (Wald/LRT), alpha, optional shrinkage; run analysis  
 4) Results: browse per-contrast tables; export all/significant genes  
 5) Enrichment (optional): run GO BP/MF/CC on significant genes; export tables and gene lists  
-6) Volcano: customize thresholds/labels/colors; export PDF/PNG and parameters
+6) Volcano: customize thresholds/labels/colors; export PDF/PNG and parameters  
+7) MA Plot: log-baseMean vs log2FC visualization with the same labeling and export workflow as Volcano  
+8) Heatmap: per-sample expression or cross-contrast LFC heatmaps with clustering, annotation tracks, and PDF/PNG/CSV exports
 
 - Example datasets: `example_data/` (toy and example CSVs)
 - Outputs: written to browser and saved under `results/` where applicable
@@ -81,13 +81,15 @@ source("app.R")
   - Results: [04_results_display_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/04_results_display_tab.md)
   - Enrichment: [05_enrichment_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/05_enrichment_tab.md)
   - Volcano Plot: [06_volcano_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/06_volcano_tab.md)
+  - MA Plot: [07_ma_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/07_ma_tab.md)
+  - Heatmap: [08_heatmap_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/08_heatmap_tab.md)
 
 ---
 
 ## Notes
 
 - Organism databases (`org.Mm.eg.db`, `org.Hs.eg.db`) are loaded on demand from the Data Input tab.
-- Pre-computed DEG CSVs can be used directly in Enrichment and Volcano tabs.
+- Pre-computed DEG CSVs can be used directly in the Enrichment, Volcano, MA, and Heatmap (LFC mode) tabs.
 
 ---
 
