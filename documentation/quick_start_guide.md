@@ -22,7 +22,7 @@ RNA-seq Differential Expression Analysis App
 - DESeq2 Configuration tab → use defaults → Run DESeq2 Analysis
 
 5) Review
-- Results tab (tables) → Volcano Plot tab (plots) → Enrichment tab (optional)
+- Results tab (tables) → Volcano Plot tab (plots) → MA Plot tab (plots) → Heatmap tab (plots) → Enrichment tab (optional)
 
 ---
 
@@ -98,7 +98,9 @@ Enrichment (typical):
 |-----|--------|
 | Results | All genes or significant genes (CSV/XLSX) |
 | Enrichment | Enrichment tables and per-term gene lists (CSV/XLSX) |
-| Volcano | Plots (PDF/PNG) and parameters (JSON) |
+| Volcano | Plots (PDF/PNG), parameters (JSON), and gene table (CSV) |
+| MA | Plots (PDF/PNG), parameters (JSON), and gene table (CSV) |
+| Heatmap | Plots (PDF/PNG), parameters (JSON), and matrix (CSV) |
 
 ---
 

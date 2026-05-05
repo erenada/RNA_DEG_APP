@@ -117,10 +117,8 @@ build_documentation_tab <- function() {
                   class = "btn btn-outline-secondary btn-xs",
                   icon("external-link-alt"), " View Guide"
                 )
-              )
-            ),
-            
-            column(4,
+              ),
+              
               div(
                 style = "margin-bottom: 15px;",
                 h5("3. DESeq2 Configuration", style = "color: #2C3E50; margin-bottom: 5px;"),
@@ -131,8 +129,10 @@ build_documentation_tab <- function() {
                   class = "btn btn-outline-secondary btn-xs",
                   icon("external-link-alt"), " View Guide"
                 )
-              ),
-              
+              )
+            ),
+            
+            column(4,
               div(
                 style = "margin-bottom: 15px;",
                 h5("4. Results Display", style = "color: #2C3E50; margin-bottom: 5px;"),
@@ -143,10 +143,8 @@ build_documentation_tab <- function() {
                   class = "btn btn-outline-secondary btn-xs",
                   icon("external-link-alt"), " View Guide"
                 )
-              )
-            ),
-            
-            column(4,
+              ),
+              
               div(
                 style = "margin-bottom: 15px;",
                 h5("5. Enrichment Analysis", style = "color: #2C3E50; margin-bottom: 5px;"),
@@ -165,6 +163,32 @@ build_documentation_tab <- function() {
                 p("Create publication-ready plots", style = "font-size: 12px; color: #666; margin-bottom: 8px;"),
                 tags$a(
                   href = "https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/06_volcano_tab.md",
+                  target = "_blank",
+                  class = "btn btn-outline-secondary btn-xs",
+                  icon("external-link-alt"), " View Guide"
+                )
+              )
+            ),
+            
+            column(4,
+              div(
+                style = "margin-bottom: 15px;",
+                h5("7. MA Plot", style = "color: #2C3E50; margin-bottom: 5px;"),
+                p("MA plot with custom labels and exports", style = "font-size: 12px; color: #666; margin-bottom: 8px;"),
+                tags$a(
+                  href = "https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/07_ma_tab.md",
+                  target = "_blank",
+                  class = "btn btn-outline-secondary btn-xs",
+                  icon("external-link-alt"), " View Guide"
+                )
+              ),
+              
+              div(
+                style = "margin-bottom: 15px;",
+                h5("8. Heatmap", style = "color: #2C3E50; margin-bottom: 5px;"),
+                p("Expression and cross-contrast LFC heatmaps", style = "font-size: 12px; color: #666; margin-bottom: 8px;"),
+                tags$a(
+                  href = "https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/08_heatmap_tab.md",
                   target = "_blank",
                   class = "btn btn-outline-secondary btn-xs",
                   icon("external-link-alt"), " View Guide"

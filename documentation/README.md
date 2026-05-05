@@ -2,7 +2,7 @@
 
 Author: Eren Ada, PhD  
 Version: 1.0  
-Last Updated: October 21, 2025
+Last Updated: 05/05/2026
 
 ---
 
@@ -27,6 +27,8 @@ Concise guides for using the app, organized by workflow. Each guide includes ess
 4) Results: [documentation/04_results_display_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/04_results_display_tab.md)
 5) Enrichment: [documentation/05_enrichment_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/05_enrichment_tab.md)
 6) Volcano Plot: [documentation/06_volcano_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/06_volcano_tab.md)
+7) MA Plot: [documentation/07_ma_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/07_ma_tab.md)
+8) Heatmap: [documentation/08_heatmap_tab.md](https://github.com/erenada/RNA_DEG_APP/blob/main/documentation/08_heatmap_tab.md)
 
 ---
 
@@ -41,6 +43,8 @@ Concise guides for using the app, organized by workflow. Each guide includes ess
 | View and export results (per contrast) | Results |
 | Run GO enrichment (BP/MF/CC) | Enrichment |
 | Create and export volcano plots | Volcano Plot |
+| Create and export MA plots | MA Plot |
+| Compare expression or LFC across contrasts as heatmaps | Heatmap |
 
 ---
 
@@ -54,6 +58,8 @@ Concise guides for using the app, organized by workflow. Each guide includes ess
 | Results | `ui/tab_results.R` | `server_modules/server_tab4_results_display.R` | `R/utils_deseq2.R` |
 | Enrichment | `ui/tab_enrichment.R` | `server_modules/server_tab5_enrichment.R` | `R/utils_enrichment.R` |
 | Volcano | `ui/tab_volcano.R` | `server_modules/server_tab6_volcano.R` | `R/utils_visualization.R` |
+| MA | `ui/tab_ma.R` | `server_modules/server_tab7_ma.R` | `R/utils_visualization.R` |
+| Heatmap | `ui/tab_heatmap.R` | `server_modules/server_tab8_heatmap.R` | `R/utils_heatmap.R` |
 
 ---
 
