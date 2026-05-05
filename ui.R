@@ -11,6 +11,7 @@ source("ui/tab_results.R", local = TRUE)
 source("ui/tab_enrichment.R", local = TRUE)
 source("ui/tab_volcano.R", local = TRUE)
 source("ui/tab_ma.R", local = TRUE)
+source("ui/tab_heatmap.R", local = TRUE)
 source("ui/tab_documentation.R", local = TRUE)
 
 ui <- fluidPage(
@@ -50,7 +51,8 @@ ui <- fluidPage(
     tags$script(src = "js/design_drag_drop.js"),
     tags$script(src = "js/enrichment_controls.js"),
     tags$script(src = "js/volcano_controls.js"),
-    tags$script(src = "js/ma_controls.js")
+    tags$script(src = "js/ma_controls.js"),
+    tags$script(src = "js/heatmap_controls.js")
   ),
   
   # Main tabset panel
@@ -79,7 +81,10 @@ ui <- fluidPage(
     # Tab 7: MA Plot Visualization
     build_ma_tab(),
     
-    # Tab 8: Documentation
+    # Tab 8: Heatmap Visualization
+    build_heatmap_tab(),
+    
+    # Tab 9: Documentation
     build_documentation_tab()
   ),  # Close tabsetPanel
   

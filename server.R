@@ -39,7 +39,12 @@ server <- function(input, output, session) {
     # MA module (Tab 7)
     ma_cache = list(),  # Cache for MA plots
     uploaded_ma_results = NULL,  # Uploaded DEG results for MA plots
-    ma_selected_genes = character(0)  # Genes selected from MA gene table
+    ma_selected_genes = character(0),  # Genes selected from MA gene table
+    # Heatmap module (Tab 8)
+    heatmap_cache = list(),  # Cache for heatmap plot results
+    vst_cache = list(),  # Cache for VST-transformed matrices, keyed by contrast
+    rlog_cache = list(),  # Cache for rlog-transformed matrices, keyed by contrast
+    uploaded_heatmap_results = NULL  # Uploaded DEG results for cross-contrast LFC heatmap
   )
   
   # =============================================================================
@@ -67,7 +72,10 @@ server <- function(input, output, session) {
   # Tab 7: MA Plot Visualization
   source("server_modules/server_tab7_ma.R", local = TRUE)
   
-  # Tab 8: Documentation
-  source("server_modules/server_tab8_documentation.R", local = TRUE)
+  # Tab 8: Heatmap Visualization
+  source("server_modules/server_tab8_heatmap.R", local = TRUE)
+  
+  # Tab 9: Documentation
+  source("server_modules/server_tab9_documentation.R", local = TRUE)
   
 }

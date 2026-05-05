@@ -17,7 +17,9 @@ required_packages <- c(
   "shiny", "shinythemes", "shinyWidgets", "shinyjs", "shinycssloaders", "DT", 
   "dplyr", "tidyr", "readr", "ggplot2", "plotly", "tools", "openxlsx",
   "digest",   # For enrichment module cache keys
-  "ggrepel"   # For MA plot gene labeling
+  "ggrepel",  # For MA plot gene labeling
+  "pheatmap", # For heatmap tab
+  "RColorBrewer" # For heatmap color palettes
 )
 
 bioc_packages <- c(
@@ -68,6 +70,10 @@ if (file.exists("R/utils_enrichment.R")) {
 
 if (file.exists("R/utils_visualization.R")) {
   source("R/utils_visualization.R")
+}
+
+if (file.exists("R/utils_heatmap.R")) {
+  source("R/utils_heatmap.R")
 }
 
 # Utility function to load organism database conditionally
